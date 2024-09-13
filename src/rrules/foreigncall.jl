@@ -70,10 +70,12 @@ function rrule!!(f::CoDual{typeof(Base.allocatedinline)}, T::CoDual{<:Type})
     return simple_zero_adjoint(f, T)
 end
 
-@is_primitive MinimalCtx Tuple{Type{<:Array{T, N}}, typeof(undef), Vararg} where {T, N}
+@is_primitive MinimalCtx Tuple{Type{<:Array{P, N}}, typeof(undef), Vararg} where {P, N}
 function rrule!!(
-    f::CoDual{Type{Array{T, N}}}, u::CoDual{typeof(undef)}, m::Vararg{CoDual}
-) where {T, N}
+    f::CoDual{Type{Array{P, N}}}, u::CoDual{typeof(undef)}, m::Vararg{CoDual}
+) where {P, N}
+    _m = map(primal, m)
+    return CoDual(Array{P, N}(undef, _m...), Array{tangent_type(P), N}(undef, _m...)), NoPullback(f, u, m...)
     return simple_zero_adjoint(f, u, m...)
 end
 

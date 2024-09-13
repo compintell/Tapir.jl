@@ -7,12 +7,10 @@
 #
 
 for name in [
-    :size,
     :(LinearAlgebra.lapack_size),
     :(Base.require_one_based_indexing),
     :in,
     :iszero,
-    :isempty,
     :isbitstype,
     :sizeof,
     :promote_type,
